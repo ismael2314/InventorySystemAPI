@@ -144,7 +144,6 @@ exports.Products = async (params) => {
     if (valid.status) {
       return valid;
     }
-    console.log()
     var sql = "SELECT * FROM product_catagory ";
     var [result] =await pool.query(sql);
 
@@ -152,6 +151,7 @@ exports.Products = async (params) => {
       var sql = "SELECT * FROM product_catagory";
       var val = [JSON.parse(params.body).productId]
       console.log(val)
+      console.log((await pool.query(sql)).find())
       [result] =(await pool.query(sql)).find(e=>e.productId=val[0]);
       
     }
