@@ -1,4 +1,4 @@
-const {userRegisration } = require("../libs/Connection.js");
+const {User_Registration } = require("../libs/Authetication.js");
 
 
 exports.handler = async function (event,context) {
@@ -27,13 +27,11 @@ exports.handler = async function (event,context) {
         createdBy:JSON.parse(event.body).regBy,
         password:JSON.parse(event.body).password
     }
-    var data = await userRegisration(user)
-
-    console.log(data)
-    if(!data.status){
+    var Regstration_Result = await User_Registration(user)
+    if(!Regstration_Result.status){
         return {
             statusCode:400,
-            body:JSON.stringify([data.message]),
+            body:JSON.stringify(Regstration_Result),
             headers:{
                 "Content-Type": "application/json",
               }
@@ -41,7 +39,7 @@ exports.handler = async function (event,context) {
     }
     return{
         statusCode:200,
-        body:JSON.stringify([{"Data":data}]),
+        body:JSON.stringify([{"Data":Regstration_Result}]),
         headers: {
             "Content-Type": "application/json",
            // "Cache-Control": "max-age=3600" // Example: Cache for 1 hour

@@ -1,4 +1,4 @@
-const { login } = require("../libs/Connection.js");
+const { User_Login } = require("../libs/Authetication.js");
 const bcrypt = require("crypto")
 
 exports.handler = async function (event, context) {
@@ -12,11 +12,11 @@ exports.handler = async function (event, context) {
     time:new Date()
   };
   console.log(loginData)
-  const verify = await login(loginData);
+  const verify = await User_Login(loginData);
   if (!verify.status) {
     return {
       statusCode: 400,
-      body: JSON.stringify([{ data: "Credidatials didn't match" ,status:false}]),
+      body: JSON.stringify(verify),
       headers: {
         "Content-Type": "application/json",
       },
