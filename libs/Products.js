@@ -46,17 +46,18 @@ exports.Get_Products = async (params) => {
           ProductExDate:new Date(params.body.productExDate),
           ProductStorage:params.body.productStorage,
           quatity:Number(params.body.quatity),
-          sellingPrice:Number(params.body.sellingPrice),
-          costPrice:Number(params.body.costPrice),
+          sellingPrice:Number(params.body.sellingPrice).toFixed(2),
+          costPrice:Number(params.body.costPrice).toFixed(2),
           catagory:Number(params.body.catagory),
           measureunit:String(params.body.measureunit),
           maxstock:Number(params.body.maxstock),
           minstock:Number(params.body.minstock),
           currentstock:Number(params.body.currentstock),
           barcode:String(params.body.barcode),
+          supplier:Number(params.body.supplier),
           recordedby:String(params.body.recordedby)
         }
-        const sql = "INSERT INTO inventory (`productId`,`productName`,`productExDate`,`productStorage`,quatity,`sellingPrice`,`costPrice`,catagory,measureunit,maxstock,minstock,currentstock,barcode,recordeddate,recordedby) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        const sql = "INSERT INTO inventory (`productId`,`productName`,`productExDate`,`productStorage`,quatity,`sellingPrice`,`costPrice`,catagory,measureunit,maxstock,minstock,currentstock,barcode,recordeddate,recordedby,supplier) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         const val = [ Product.ProductID,
                       Product.ProductName,
                       Product.ProductExDate,
@@ -71,7 +72,8 @@ exports.Get_Products = async (params) => {
                       Product.currentstock,
                       Product.barcode,
                       new Date(),
-                      Product.recordedby
+                      Product.recordedby,
+                      Product.supplier
                     ]
   
         const [result] = await Connection_Pool.execute(sql,val)

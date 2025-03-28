@@ -17,7 +17,7 @@ exports.handler = async function (request,response){
           const data = {
             token:request.headers.authorization,
             body:{
-                productId:String(dataBody.productId),
+                productId:`${dataBody.productname.split(' ')[0][0]}${dataBody.productname.split(' ')[1][0]}-${dataBody.barcode.split('-')[0]}${(Math.random()*10000).toFixed()}`,
                 productname:String(dataBody.productname),
                 productExDate:new Date(dataBody.productExDate),
                 productStorage:String(dataBody.productStorage),
@@ -29,6 +29,7 @@ exports.handler = async function (request,response){
                 maxstock:Number(dataBody.maxstock),
                 minstock:Number(dataBody.minstock),
                 currentstock:Number(dataBody.currentstock),
+                supplier:Number(dataBody.supplier),
                 barcode:String(dataBody.barcode),
                 recordedby:response.clientContext.user.username,
                 token:response.clientContext.identity.token
@@ -46,7 +47,7 @@ exports.handler = async function (request,response){
     }catch(ex){
         return {
             statusCode: 400,
-            body: JSON.stringify({status:false,message:ex.message,}),
+            body: JSON.stringify({status:false,message:ex,}),
             headers: {
               "Content-Type": "application/json",
             }
