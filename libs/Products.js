@@ -35,13 +35,11 @@ exports.Get_Products = async (params) => {
 
 
   exports.Insert_Products = async function setProducts(params) {
-    console.log(params)
-    const valid = await Token_validate(params);
-      if (!valid.status) {
-        return valid;
-      }
       
       try{
+          const valid = await Token_validate(params);
+          if (!valid.status) {return valid;}
+
         const Product = {
           ProductID:String(params.body.productId),
           ProductName:String(params.body.productname),
@@ -67,7 +65,7 @@ exports.Get_Products = async (params) => {
                       Product.sellingPrice,
                       Product.costPrice,
                       Product.catagory,
-                      Product.measureunit,
+                      Product.measureunit.toUpperCase(),
                       Product.maxstock,
                       Product.minstock,
                       Product.currentstock,
@@ -82,4 +80,50 @@ exports.Get_Products = async (params) => {
         return ex
       }
       
+  }
+
+  exports.Update_Products = async function updateProduct (params){
+
+    try{
+
+          const Product = {
+              productName:String(params.body.productName)
+            , quatity:Number(params.body.quatity)
+            , sellingPrice:Number(params.body.sellingPrice).toFixed(2)
+            , costPrice:Number(params.body.costPrice).toFixed(2)
+            , catagory:Number(params.body.catagory)
+            , measureunit:String(params.body.measureunit)
+            , maxstock:Number(params.body.maxstock)
+            , minstock:Number(params.body.minstock)
+            , barcode:String(params.body.barcode)
+            , recordedby:String(params.body.recordedby)
+            , recordeddate:new Date()
+            , productId:String(params.body.productId)
+          }
+         
+          const valid = await Token_validate(params);
+          if (!valid.status) {return valid;}
+          const sql = "UPDATE inventory SET `productName`=? , quatity=?, `sellingPrice`=?, `costPrice`=? , `catagory`=? ,measureunit=?, maxstock=?,minstock=?,barcode=?,recordedby=?,recordeddate=? WHERE `productId`=? ";
+          const val = [
+            Product.productName
+          , Product.quatity
+          , Product.sellingPrice
+          , Product.costPrice
+          , Product.catagory
+          , Product.measureunit.toUpperCase()
+          , Product.maxstock
+          , Product.minstock
+          , Product.barcode
+          , Product.recordedby
+          , Product.recordeddate
+          , Product.productId
+          ]
+
+          const [result] = await Connection_Pool.execute(sql,val)
+          console.log(result)
+          return result
+        }catch(ex){
+          console.log(ex)
+            return ex
+        }
   }

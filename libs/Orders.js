@@ -71,7 +71,6 @@ exports.Add_Orders = async function AddOrders(params) {
             Order.recorededBy
           ]
           const [result] = await Connection_Pool.execute(sql,val)
-          console.log(result)
         return result
       } catch (ex) {
         return ex
